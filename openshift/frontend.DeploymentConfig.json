@@ -1,0 +1,140 @@
+{
+    "kind": "DeploymentConfig",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "frontend",
+        "creationTimestamp": null,
+        "labels": {
+            "app": "frontend"
+        },
+        "annotations": {
+            "openshift.io/deployment.cancelled": "19",
+            "openshift.io/generated-by": "OpenShiftWebConsole"
+        }
+    },
+    "spec": {
+        "strategy": {
+            "type": "Rolling",
+            "rollingParams": {
+                "updatePeriodSeconds": 1,
+                "intervalSeconds": 1,
+                "timeoutSeconds": 600,
+                "maxUnavailable": "25%",
+                "maxSurge": "25%"
+            },
+            "resources": {
+            }
+        },
+        "triggers": [
+            {
+                "type": "ImageChange",
+                "imageChangeParams": {
+                    "automatic": true,
+                    "containerNames": [
+                        "frontend"
+                    ],
+                    "from": {
+                        "kind": "ImageStreamTag",
+                        "namespace": "gme-milestones",
+                        "name": "frontend:latest"
+                    }
+                }
+            },
+            {
+                "type": "ConfigChange"
+            }
+        ],
+        "replicas": 1,
+        "test": false,
+        "selector": {
+            "deploymentconfig": "frontend"
+        },
+        "template": {
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "frontend",
+                    "deploymentconfig": "frontend"
+                }
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "ssl-key-and-certs",
+                        "secret": {
+                            "secretName": "ssl-key-and-certs"
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "frontend",
+                        "image": "172.30.163.121:5000/gme-milestones/frontend@sha256:3366020a746df8201b5a0029ceff0d78b234d1c46b0f021c9aea88be403557a8",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "DATABASE_SERVICE_NAME",
+                                "value": "postgresql"
+                            },
+                            {
+                                "name": "POSTGRESQL_USER",
+                                "value": "userVM2"
+                            },
+                            {
+                                "name": "POSTGRESQL_PASSWORD",
+                                "value": "EuLmARdqUUcgH6i7"
+                            },
+                            {
+                                "name": "POSTGRESQL_DATABASE",
+                                "value": "milestones"
+                            },
+                            {
+                                "name": "AUTH_LDAP_SERVER_URI",
+                                "value": "ldap://ldap.partners.org"
+                            },
+                            {
+                                "name": "AUTH_LDAP_BIND_DN",
+                                "value": "cn=lcs23,cn=Users,dc=partners,dc=org"
+                            },
+                            {
+                                "name": "AUTH_LDAP_BIND_PASSWORD",
+                                "value": "xtn7n"
+                            },
+                            {
+                                "name": "APP_CONFIG",
+                                "value": "config.py"
+                            },
+                            {
+                                "name": "APP_MODULE",
+                                "value": "milestones.wsgi"
+                            }
+                        ],
+                        "resources": {
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "ssl-key-and-certs",
+                                "readOnly": true,
+                                "mountPath": "/etc/ssl"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "imagePullPolicy": "Always"
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "securityContext": {
+                }
+            }
+        }
+    },
+    "status": {
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "postgresql",
+        "creationTimestamp": null,
+        "labels": {
+            "app": "postgresql-persistent",
+            "template": "postgresql-persistent-template"
+        },
+        "annotations": {
+            "openshift.io/generated-by": "OpenShiftNewApp"
+        }
+    },
+    "spec": {
+        "accessModes": [
+            "ReadWriteOnce"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "1Gi"
+            }
+        },
+        "volumeName": "pv015"
+    },
+    "status": {
+    }
+}

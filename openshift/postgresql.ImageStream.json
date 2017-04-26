@@ -1,0 +1,36 @@
+{
+    "kind": "ImageStream",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "postgresql-95-rhel7",
+        "generation": 2,
+        "creationTimestamp": null,
+        "labels": {
+            "app": "postgresql-95-rhel7"
+        },
+        "annotations": {
+            "openshift.io/generated-by": "OpenShiftNewApp",
+            "openshift.io/image.dockerRepositoryCheck": "2016-10-12T19:44:59Z"
+        }
+    },
+    "spec": {
+        "tags": [
+            {
+                "name": "latest",
+                "annotations": {
+                    "openshift.io/imported-from": "registry.access.redhat.com/rhscl/postgresql-95-rhel7:latest"
+                },
+                "from": {
+                    "kind": "DockerImage",
+                    "name": "172.30.163.121:5000/gme-milestones/postgresql-95-rhel7:latest"
+                },
+                "generation": 2,
+                "importPolicy": {
+                }
+            }
+        ]
+    },
+    "status": {
+        "dockerImageRepository": ""
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "kind": "ImageStream",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "frontend",
+        "generation": 1,
+        "creationTimestamp": null,
+        "labels": {
+            "app": "frontend"
+        },
+        "annotations": {
+            "openshift.io/generated-by": "OpenShiftWebConsole"
+        }
+    },
+    "spec": {
+        "tags": [
+            {
+                "name": "latest",
+                "annotations": null,
+                "from": {
+                    "kind": "DockerImage",
+                    "name": "172.30.163.121:5000/gme-milestones/frontend:latest"
+                },
+                "generation": null,
+                "importPolicy": {
+                }
+            }
+        ]
+    },
+    "status": {
+        "dockerImageRepository": ""
+    }
+}

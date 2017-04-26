@@ -1,0 +1,79 @@
+{
+    "kind": "BuildConfig",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "frontend",
+        "creationTimestamp": null,
+        "labels": {
+            "app": "frontend"
+        },
+        "annotations": {
+            "openshift.io/generated-by": "OpenShiftWebConsole"
+        }
+    },
+    "spec": {
+        "triggers": [
+            {
+                "type": "Generic",
+                "generic": {
+                    "secret": "ea450a66bd7d3941"
+                }
+            },
+            {
+                "type": "GitHub",
+                "github": {
+                    "secret": "4ff792a5d2e7f26d"
+                }
+            },
+            {
+                "type": "ImageChange",
+                "imageChange": {
+                }
+            },
+            {
+                "type": "ConfigChange"
+            }
+        ],
+        "runPolicy": "Serial",
+        "source": {
+            "type": "Git",
+            "git": {
+                "uri": "https://github.com/hubswheel/milestones.git",
+                "ref": "master"
+            }
+        },
+        "strategy": {
+            "type": "Source",
+            "sourceStrategy": {
+                "from": {
+                    "kind": "ImageStreamTag",
+                    "namespace": "openshift",
+                    "name": "python:3.5"
+                },
+                "env": [
+                    {
+                        "name": "LANG",
+                        "value": "en_US.UTF-8"
+                    },
+                    {
+                        "name": "LANGUAGE",
+                        "value": "en_US:en"
+                    }
+                ]
+            }
+        },
+        "output": {
+            "to": {
+                "kind": "ImageStreamTag",
+                "name": "frontend:latest"
+            }
+        },
+        "resources": {
+        },
+        "postCommit": {
+        }
+    },
+    "status": {
+        "lastVersion": 0
+    }
+}

@@ -1,0 +1,41 @@
+{
+    "kind": "Route",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "frontend",
+        "creationTimestamp": null,
+        "labels": {
+            "app": "frontend"
+        },
+        "annotations": {
+            "openshift.io/generated-by": "OpenShiftWebConsole",
+            "openshift.io/host.generated": "true"
+        }
+    },
+    "spec": {
+        "host": "milestones.partners.org",
+        "to": {
+            "kind": "Service",
+            "name": "frontend",
+            "weight": 100
+        },
+        "tls": {
+            "termination": "passthrough"
+        }
+    },
+    "status": {
+        "ingress": [
+            {
+                "host": "milestones.partners.org",
+                "routerName": "router",
+                "conditions": [
+                    {
+                        "type": "Admitted",
+                        "status": "True",
+                        "lastTransitionTime": "2017-01-11T21:12:08Z"
+                    }
+                ]
+            }
+        ]
+    }
+}

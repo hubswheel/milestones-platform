@@ -1,0 +1,147 @@
+{
+    "kind": "DeploymentConfig",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "postgresql",
+        "creationTimestamp": null,
+        "labels": {
+            "app": "postgresql-persistent",
+            "template": "postgresql-persistent-template"
+        },
+        "annotations": {
+            "openshift.io/generated-by": "OpenShiftNewApp"
+        }
+    },
+    "spec": {
+        "strategy": {
+            "type": "Recreate",
+            "recreateParams": {
+                "timeoutSeconds": 600
+            },
+            "resources": {
+            }
+        },
+        "triggers": [
+            {
+                "type": "ImageChange",
+                "imageChangeParams": {
+                    "automatic": true,
+                    "containerNames": [
+                        "postgresql"
+                    ],
+                    "from": {
+                        "kind": "ImageStreamTag",
+                        "namespace": "openshift",
+                        "name": "postgresql:latest"
+                    }
+                }
+            },
+            {
+                "type": "ConfigChange"
+            }
+        ],
+        "replicas": 1,
+        "test": false,
+        "selector": {
+            "name": "postgresql"
+        },
+        "template": {
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "postgresql-persistent",
+                    "name": "postgresql"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "postgresql-data",
+                        "persistentVolumeClaim": {
+                            "claimName": "postgresql"
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "postgresql",
+                        "image": "registry.access.redhat.com/rhscl/postgresql-95-rhel7:latest",
+                        "ports": [
+                            {
+                                "containerPort": 5432,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "POSTGRESQL_USER",
+                                "value": "userVM2"
+                            },
+                            {
+                                "name": "POSTGRESQL_PASSWORD",
+                                "value": "EuLmARdqUUcgH6i7"
+                            },
+                            {
+                                "name": "POSTGRESQL_DATABASE",
+                                "value": "milestones"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "memory": "512Mi"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "postgresql-data",
+                                "mountPath": "/var/lib/pgsql/data"
+                            }
+                        ],
+                        "livenessProbe": {
+                            "tcpSocket": {
+                                "port": 5432
+                            },
+                            "initialDelaySeconds": 30,
+                            "timeoutSeconds": 1,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "failureThreshold": 3
+                        },
+                        "readinessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/bin/sh",
+                                    "-i",
+                                    "-c",
+                                    "psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'"
+                                ]
+                            },
+                            "initialDelaySeconds": 5,
+                            "timeoutSeconds": 1,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "failureThreshold": 3
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "imagePullPolicy": "IfNotPresent",
+                        "securityContext": {
+                            "capabilities": {
+                            },
+                            "privileged": false
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "securityContext": {
+                }
+            }
+        }
+    },
+    "status": {
+    }
+}

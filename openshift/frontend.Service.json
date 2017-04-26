@@ -1,0 +1,33 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "frontend",
+        "creationTimestamp": null,
+        "labels": {
+            "app": "frontend"
+        },
+        "annotations": {
+            "openshift.io/generated-by": "OpenShiftWebConsole"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "name": "8443-tcp",
+                "protocol": "TCP",
+                "port": 8443,
+                "targetPort": 8080
+            }
+        ],
+        "selector": {
+            "deploymentconfig": "frontend"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    },
+    "status": {
+        "loadBalancer": {
+        }
+    }
+}
