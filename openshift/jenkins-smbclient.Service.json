@@ -1,0 +1,27 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "jenkins",
+        "labels": {
+            "template": "milestones-jenkins",
+            "application": "milestones",
+            "component": "jenkins"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "name": "web",
+                "protocol": "TCP",
+                "port": 8080,
+                "targetPort": 8080
+            }
+        ],
+        "selector": {
+            "name": "jenkins"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    }
+}

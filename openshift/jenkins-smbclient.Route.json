@@ -1,0 +1,21 @@
+{
+    "kind": "Route",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "jenkins",
+        "labels": {
+            "application": "milestones",
+            "component": "jenkins"
+        }
+    },
+    "spec": {
+        "host": "",
+        "to": {
+            "kind": "Service",
+            "name": "jenkins"
+        },
+        "tls": {
+            "termination": "edge"
+        }
+    }
+}

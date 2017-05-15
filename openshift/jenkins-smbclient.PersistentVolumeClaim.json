@@ -1,0 +1,22 @@
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "jenkins",
+        "labels": {
+            "template": "milestones-jenkins",
+            "application": "milestones",
+            "component": "jenkins"
+        }
+    },
+    "spec": {
+        "accessModes": [
+            "ReadWriteOnce"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "1Gi"
+            }
+        }
+    }
+}
