@@ -4,7 +4,6 @@
     "metadata": {
         "name": "jenkins",
         "labels": {
-            "template": "milestones-jenkins",
             "application": "milestones",
             "component": "jenkins"
         }
@@ -45,7 +44,6 @@
             "metadata": {
                 "labels": {
                     "name": "jenkins",
-                    "template": "milestones-jenkins",
                     "application": "milestones",
                     "component": "jenkins"
                 }
