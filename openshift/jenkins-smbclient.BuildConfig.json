@@ -1,0 +1,69 @@
+{
+    "kind": "BuildConfig",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "jenkins-smbclient"
+    },
+    "spec": {
+        "triggers": [
+            {
+                "type": "ConfigChange"
+            },
+            {
+                "type": "ImageChange",
+                "imageChange": {
+                    "lastTriggeredImageID": "openshift/jenkins:latest"
+                }
+            },
+            {
+                "type": "Generic",
+                "generic": {
+                    "secret": "c99fcab17bbf9751"
+                }
+            },
+            {
+                "type": "GitHub",
+                "github": {
+                    "secret": "5f7294a9f971d682"
+                }
+            }
+        ],
+        "source": {
+            "type": "Dockerfile",
+            "dockerfile": "FROM jenkins\nUSER root\nRUN yum -y install samba-client && yum clean all -y\nUSER 1001"
+        },
+        "strategy": {
+            "type": "Docker",
+            "dockerStrategy": {
+                "from": {
+                    "kind": "ImageStreamTag",
+                    "namespace": "openshift",
+                    "name": "jenkins:latest"
+                },
+                "env": [
+                    {
+                        "name": "LANG",
+                        "value": "en_US.UTF-8"
+                    },
+                    {
+                        "name": "LANGUAGE",
+                        "value": "en_US:en"
+                    }
+                ]
+            }
+        },
+        "output": {
+            "to": {
+                "kind": "ImageStreamTag",
+                "name": "jenkins-smbclient:latest"
+            }
+        },
+        "resources": {
+        },
+        "postCommit": {
+        }
+    },
+    "status": {
+        "lastVersion": "0"
+    }
+}

@@ -1,0 +1,22 @@
+{
+   "kind": "ImageStream",
+   "apiVersion": "v1",
+   "metadata": {
+      "name": "jenkins-smbclient",
+      "generation": 1
+   },
+   "spec": {
+      "tags": [
+         {
+            "name": "latest",
+            "from": {
+               "kind": "DockerImage",
+               "name": "jenkins-smbclient:latest"
+            },
+            "generation": null,
+            "importPolicy": {
+            }
+         }
+      ]
+   }
+}

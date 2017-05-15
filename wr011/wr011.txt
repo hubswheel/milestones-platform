@@ -1,0 +1,71 @@
+oc rsync \
+    jenkins.configs/postgresqldump/ \
+    jenkins-3-0y1et:/var/lib/jenkins/jobs/postgresqldump
+
+oc policy add-role-to-user edit system:serviceaccount:gme-milestones:default
+
+pg_dump --format=custom -w $POSTGRESQL_DATABASE > /var/lib/pgsql/data/dump/$POSTGRESQL_DATABASE.$(date +"%Y%m%dT%H%M%S").dump
+
+oc rsync \
+    postgresql-1-prd7a:/var/lib/pgsql/data/dump/ \
+    temp/pgsql/data/dump
+
+
+
+oc tag --scheduled=true registry.access.redhat.com/rhel7:latest rhel7:latest
+
+
+
+
+
+                                                                                
+source /opt/app-root/etc/generate_container_user                                
+                                                                                
+set -e                                                                          
+                                                                                
+exec nginx -g "daemon off;"  
+
+
+
+
+
+oc export isimage python-django-smbclient@sha256:a8432bf6f77fdf6a55eab988973ca5eb47d10de4a06113739395b5e2f7e3e9f0
+
+
+
+Arrrrgh! Two days wasted trying to figure out why my pods fail with Crash Loop Backoff.
+Happens because the pod exits when it has finished its startup command.
+My startup command was empty. So pod started, decided it was finished, and it quit.
+Then it restarted and the cycle continued.
+
+----------------------------------------------
+5/15/2017
+
+oc rsync \
+    jenkins.configs/postgresqldump/ \
+    jenkins-3-4yf03:/var/lib/jenkins/jobs/postgresqldump
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

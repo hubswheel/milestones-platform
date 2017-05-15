@@ -1,0 +1,129 @@
+{
+    "kind": "DeploymentConfig",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "jenkins",
+        "labels": {
+            "template": "milestones-jenkins",
+            "application": "milestones",
+            "component": "jenkins"
+        }
+    },
+    "spec": {
+        "strategy": {
+            "type": "Recreate",
+            "recreateParams": {
+                "timeoutSeconds": 600
+            },
+            "resources": {
+            }
+        },
+        "triggers": [
+            {
+                "type": "ImageChange",
+                "imageChangeParams": {
+                    "automatic": true,
+                    "containerNames": [
+                        "jenkins"
+                    ],
+                    "from": {
+                        "kind": "ImageStreamTag",
+                        "name": "jenkins-smbclient:latest"
+                    }
+                }
+            },
+            {
+                "type": "ConfigChange"
+            }
+        ],
+        "replicas": 1,
+        "test": false,
+        "selector": {
+            "name": "jenkins"
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+                    "name": "jenkins",
+                    "template": "milestones-jenkins",
+                    "application": "milestones",
+                    "component": "jenkins"
+                }
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "jenkins-data",
+                        "persistentVolumeClaim": {
+                            "claimName": "jenkins"
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "jenkins",
+                        "image": "jenkins-smbclient:latest",
+                        "env": [
+                            {
+                                "name": "JENKINS_PASSWORD",
+                                "valueFrom": {
+                                    "secretKeyRef": {
+                                        "name": "jenkins",
+                                        "key": "jenkins.password"
+                                    }
+                                }
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "memory": "512Mi"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "name": "jenkins-data",
+                                "mountPath": "/var/lib/jenkins"
+                            }
+                        ],
+                        "livenessProbe": {
+                            "httpGet": {
+                                "path": "/login",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 60,
+                            "timeoutSeconds": 3,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "failureThreshold": 3
+                        },
+                        "readinessProbe": {
+                            "httpGet": {
+                                "path": "/login",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 3,
+                            "timeoutSeconds": 3,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "failureThreshold": 3
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "imagePullPolicy": "IfNotPresent",
+                        "securityContext": {
+                            "capabilities": {
+                            },
+                            "privileged": false
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "securityContext": {
+                }
+            }
+        }
+    }
+}
