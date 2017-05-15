@@ -12,27 +12,6 @@ oc rsync \
 
 
 
-oc tag --scheduled=true registry.access.redhat.com/rhel7:latest rhel7:latest
-
-
-
-
-
-                                                                                
-source /opt/app-root/etc/generate_container_user                                
-                                                                                
-set -e                                                                          
-                                                                                
-exec nginx -g "daemon off;"  
-
-
-
-
-
-oc export isimage python-django-smbclient@sha256:a8432bf6f77fdf6a55eab988973ca5eb47d10de4a06113739395b5e2f7e3e9f0
-
-
-
 Arrrrgh! Two days wasted trying to figure out why my pods fail with Crash Loop Backoff.
 Happens because the pod exits when it has finished its startup command.
 My startup command was empty. So pod started, decided it was finished, and it quit.
@@ -47,13 +26,21 @@ oc rsync \
 
 
 
+oc rsh jenkins-3-4yf03
 
+oc rsync \
+    postgresql-1-prd7a:/var/lib/pgsql/data/dump/milestones.20170515T154902.dump \
+    /tmp/
 
+smbclient \\\\cifs2.partners.org\\homedir$ -W PARTNERS -U wr011
 
+export SMBCLIENT_PASS=.....
 
+smbclient \\\\cifs2.partners.org\\homedir$ -W PARTNERS -U wr011 $SMBCLIENT_PASS
 
+smbclient \\\\cifs2.partners.org\\homedir$ -W PARTNERS -U wr011 $SMBCLIENT_PASS -c "cd Wayne/dumps/milestones; ls"
 
-
+smbclient \\\\cifs2.partners.org\\homedir$ -W PARTNERS -U wr011 $SMBCLIENT_PASS -c "lcd /tmp; cd Wayne/dumps/milestones; put milestones.20170515T154902.dump"
 
 
 
